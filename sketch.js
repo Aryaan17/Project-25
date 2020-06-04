@@ -4,6 +4,7 @@ const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 const Render = Matter.Render;
+const Constraint = Matter.Constraint;
 var paper, paperImage, paperSprite;
 var dustbinSprite, dustbinImage;
 
@@ -25,7 +26,9 @@ function setup() {
 	engine = Engine.create();
 	world = engine.world;
 
-	paper = new Paper(100, 150, 15);
+	paper = new Paper(100, 200, 15);
+
+	sling = new Slingshot(paper.body, {x:100, y:150});
 
 	ground = new Ground(400, 400, 1000, 20);
 
@@ -46,6 +49,7 @@ function draw() {
 	background("yellow");
 	paper.display();
 	ground.display();
+	sling.display();
 
 	paperSprite.x = paper.body.position.x 
 	paperSprite.y = paper.body.position.y
@@ -60,11 +64,20 @@ function draw() {
 	//keyPressed();
 }
 
-function keyPressed() {
+/*function keyPressed() {
 	if(keyCode === UP_ARROW){
 		Matter.Body.applyForce(paper.body, paper.body.position,{x:10,y:-40});
 	}
+}*/
+
+function mouseDragged(){
+    Matter.Body.setPosition(paper.body, {x:mouseX, y:mouseY});
 }
+
+function mouseReleased(){
+    sling.fly();
+}
+
 
 /*var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
 var packageBody,ground
